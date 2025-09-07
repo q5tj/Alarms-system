@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد إنذار الموظف المتقدم - نظام شامل لإدارة الإنذارات</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚠️</text></svg>">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-icon">⚠️</span>
+                <h1>مولد الإنذارات المتقدم</h1>
+            </div>
+            <div class="nav-menu">
+                <a href="#generator" class="nav-link active">المولد</a>
+                <a href="#history" class="nav-link">السجل</a>
+                <a href="#templates" class="nav-link">القوالب</a>
+                <a href="#analytics" class="nav-link">الإحصائيات</a>
+                <a href="#help" class="nav-link">المساعدة</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Generator Section -->
+        <section id="generator" class="section active">
+            <div class="container">
+                <div class="section-header">
+                    <h2>إنشاء إنذار جديد</h2>
+                    <p>أنشئ إنذارات مهنية للموظفين بسهولة وسرعة</p>
+                </div>
+
+                <div class="generator-layout">
+                    <!-- Form Panel -->
+                    <div class="form-panel">
+                        <form id="warningForm" class="warning-form">
+                            <!-- Company Information -->
+                            <div class="form-section">
+                                <h3>معلومات الشركة</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="company">اسم الشركة *</label>
+                                        <input type="text" id="company" placeholder="ادخل اسم الشركة" required>
+                                        <small>سيظهر كختم مائي في الخلفية</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="department">القسم</label>
+                                        <input type="text" id="department" placeholder="قسم الموارد البشرية">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="logo">شعار الشركة</label>
+                                        <input type="file" id="logo" accept="image/*">
+                                        <div class="file-preview" id="logoPreview"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Warning Details -->
+                            <div class="form-section">
+                                <h3>تفاصيل الإنذار</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="warningNo">رقم الإنذار</label>
+                                        <input type="text" id="warningNo" readonly>
+                                        <small>يتم إنشاؤه تلقائياً</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="warningType">نوع الإنذار *</label>
+                                        <select id="warningType" required>
+                                            <option value="">اختر نوع الإنذار</option>
+                                            <option value="تحذير شفهي">تحذير شفهي</option>
+                                            <option value="تحذير مكتوب">تحذير مكتوب</option>
+                                            <option value="إنذار أول">إنذار أول</option>
+                                            <option value="إنذار ثاني">إنذار ثاني</option>
+                                            <option value="إنذار نهائي">إنذار نهائي</option>
+                                            <option value="تنبيه سلوك">تنبيه سلوك</option>
+                                            <option value="تنبيه أداء">تنبيه أداء</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="severity">درجة الخطورة</label>
+                                        <select id="severity">
+                                            <option value="منخفضة">منخفضة</option>
+                                            <option value="متوسطة" selected>متوسطة</option>
+                                            <option value="عالية">عالية</option>
+                                            <option value="حرجة">حرجة</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="warningDate">تاريخ الإنذار *</label>
+                                        <input type="date" id="warningDate" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Employee Information -->
+                            <div class="form-section">
+                                <h3>معلومات الموظف</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="employeeName">اسم الموظف *</label>
+                                        <input type="text" id="employeeName" placeholder="الاسم الكامل" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="employeeId">رقم الموظف</label>
+                                        <input type="text" id="employeeId" placeholder="رقم الهوية الوظيفية">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="employeeEmail">البريد الإلكتروني *</label>
+                                        <input type="email" id="employeeEmail" placeholder="employee@company.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="employeePosition">المنصب</label>
+                                        <input type="text" id="employeePosition" placeholder="منصب الموظف">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Warning Content -->
+                            <div class="form-section">
+                                <h3>محتوى الإنذار</h3>
+                                <div class="form-group full-width">
+                                    <label for="warningReason">سبب الإنذار *</label>
+                                    <select id="warningReason" required>
+                                        <option value="">اختر السبب</option>
+                                        <option value="التأخير المتكرر">التأخير المتكرر</option>
+                                        <option value="الغياب بدون إذن">الغياب بدون إذن</option>
+                                        <option value="عدم الالتزام بالمواعيد">عدم الالتزام بالمواعيد</option>
+                                        <option value="ضعف الأداء">ضعف الأداء</option>
+                                        <option value="مخالفة اللوائح">مخالفة اللوائح</option>
+                                        <option value="سوء السلوك">سوء السلوك</option>
+                                        <option value="عدم اتباع التعليمات">عدم اتباع التعليمات</option>
+                                        <option value="أخرى">أخرى</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="warningDetails">تفاصيل الإنذار *</label>
+                                    <textarea id="warningDetails" rows="6" placeholder="اكتب تفاصيل الإنذار والمخالفة المرتكبة..." required></textarea>
+                                    <div class="char-counter">
+                                        <span id="charCount">0</span> / 1000 حرف
+                                    </div>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="consequences">العواقب المترتبة</label>
+                                    <textarea id="consequences" rows="3" placeholder="اذكر العواقب في حالة تكرار المخالفة..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Signature Section -->
+                            <div class="form-section">
+                                <h3>التوقيع والاعتماد</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="managerName">اسم المدير</label>
+                                        <input type="text" id="managerName" placeholder="اسم المدير المباشر">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="managerPosition">منصب المدير</label>
+                                        <input type="text" id="managerPosition" placeholder="مدير الموارد البشرية">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signature">توقيع المدير</label>
+                                        <input type="file" id="signature" accept="image/*">
+                                        <div class="file-preview" id="signaturePreview"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="requireEmployeeSignature" checked>
+                                            <label for="requireEmployeeSignature">يتطلب توقيع الموظف</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="form-actions">
+                                <button type="button" id="generateBtn" class="btn btn-primary">
+                                    <span>🔄</span> إنشاء المعاينة
+                                </button>
+                                <button type="button" id="saveTemplateBtn" class="btn btn-secondary">
+                                    <span>💾</span> حفظ كقالب
+                                </button>
+                                <button type="button" id="clearFormBtn" class="btn btn-outline">
+                                    <span>🗑️</span> مسح النموذج
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preview Panel -->
+                    <div class="preview-panel">
+                        <div class="preview-header">
+                            <h3>معاينة الإنذار</h3>
+                            <div class="preview-actions">
+                                <button id="printBtn" class="btn btn-sm">
+                                    <span>🖨️</span> طباعة
+                                </button>
+                                <button id="downloadBtn" class="btn btn-sm">
+                                    <span>📥</span> تحميل PDF
+                                </button>
+                                <button id="emailBtn" class="btn btn-sm">
+                                    <span>📧</span> إرسال
+                                </button>
+                            </div>
+                        </div>
+                        <div class="preview-content" id="previewContent">
+                            <div class="warning-document" id="warningDocument">
+                                <!-- Document content will be generated here -->
+                                <div class="document-placeholder">
+                                    <div class="placeholder-icon">📄</div>
+                                    <p>املأ النموذج لرؤية معاينة الإنذار</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>سجل الإنذارات</h2>
+                    <p>عرض وإدارة جميع الإنذارات المحفوظة</p>
+                </div>
+                <div class="history-controls">
+                    <div class="search-box">
+                        <input type="text" id="historySearch" placeholder="البحث في السجل...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="filter-controls">
+                        <select id="historyFilter">
+                            <option value="">جميع الأنواع</option>
+                            <option value="تحذير شفهي">تحذير شفهي</option>
+                            <option value="تحذير مكتوب">تحذير مكتوب</option>
+                            <option value="إنذار نهائي">إنذار نهائي</option>
+                        </select>
+                        <button id="exportHistoryBtn" class="btn btn-secondary">
+                            <span>📊</span> تصدير السجل
+                        </button>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Section -->
+        <section id="templates" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>قوالب الإنذارات</h2>
+                    <p>إنشاء وإدارة قوالب مخصصة للاستخدام المتكرر</p>
+                </div>
+                <div class="templates-grid" id="templatesGrid">
+                    <!-- Templates will be populated here -->
+                </div>
+                <button id="createTemplateBtn" class="btn btn-primary create-template-btn">
+                    <span>➕</span> إنشاء قالب جديد
+                </button>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>الإحصائيات والتقارير</h2>
+                    <p>تحليل بيانات الإنذارات والاتجاهات</p>
+                </div>
+                <div class="analytics-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <h3 id="totalWarnings">0</h3>
+                            <p>إجمالي الإنذارات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <h3 id="monthlyWarnings">0</h3>
+                            <p>إنذارات هذا الشهر</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-content">
+                            <h3 id="criticalWarnings">0</h3>
+                            <p>إنذارات حرجة</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3 id="uniqueEmployees">0</h3>
+                            <p>موظفين مختلفين</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>توزيع أنواع الإنذارات</h3>
+                        <canvas id="warningTypesChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>الإنذارات الشهرية</h3>
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help Section -->
+        <section id="help" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>المساعدة والدعم</h2>
+                    <p>دليل الاستخدام والأسئلة الشائعة</p>
+                </div>
+                <div class="help-content">
+                    <div class="help-grid">
+                        <div class="help-card">
+                            <div class="help-icon">📖</div>
+                            <h3>دليل الاستخدام</h3>
+                            <p>تعلم كيفية استخدام جميع ميزات النظام</p>
+                            <button class="btn btn-outline">عرض الدليل</button>
+                        </div>
+                        <div class="help-card">
+                            <div class="help-icon">❓</div>
+                            <h3>الأسئلة الشائعة</h3>
+                            <p>إجابات على الأسئلة الأكثر شيوعاً</p>
+                            <button class="btn btn-outline">عرض الأسئلة</button>
+                        </div>
+                        <div class="help-card">
+                            <div class="help-icon">🎥</div>
+                            <h3>فيديوهات تعليمية</h3>
+                            <p>شروحات مرئية لاستخدام النظام</p>
+                            <button class="btn btn-outline">مشاهدة الفيديوهات</button>
+                        </div>
+                        <div class="help-card">
+                            <div class="help-icon">📞</div>
+                            <h3>الدعم الفني</h3>
+                            <p>تواصل معنا للحصول على المساعدة</p>
+                            <button class="btn btn-outline">تواصل معنا</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="templateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إنشاء قالب جديد</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="templateForm">
+                    <div class="form-group">
+                        <label for="templateName">اسم القالب</label>
+                        <input type="text" id="templateName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="templateDescription">الوصف</label>
+                        <textarea id="templateDescription" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="saveTemplateModalBtn" class="btn btn-primary">حفظ القالب</button>
+                <button class="btn btn-outline modal-close">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>جاري المعالجة...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
