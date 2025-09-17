@@ -12,7 +12,6 @@ class WarningGeneratorApp {
     init() {
         this.setupEventListeners();
         this.setupNavigation();
-        this.setupTheme();
         this.setupFormValidation();
         this.loadFormData();
         this.updateAnalytics();
@@ -20,7 +19,6 @@ class WarningGeneratorApp {
         
         // Set current date
         document.getElementById('warningDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('warningNo').value = this.formatWarningNumber(this.currentWarningNumber);
     }
 
     // Event Listeners Setup
@@ -35,10 +33,6 @@ class WarningGeneratorApp {
             });
         });
 
-        // Theme toggle
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            this.toggleTheme();
-        });
 
         // Form events
         document.getElementById('generateBtn').addEventListener('click', () => {
@@ -113,11 +107,6 @@ class WarningGeneratorApp {
         this.showSection('generator');
     }
 
-    setupTheme() {
-        document.documentElement.setAttribute('data-theme', this.currentTheme);
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.textContent = this.currentTheme === 'dark' ? '☀️' : '🌙';
-    }
 
     setupFormValidation() {
         const form = document.getElementById('warningForm');
@@ -175,12 +164,6 @@ class WarningGeneratorApp {
         activeLink.classList.add('active');
     }
 
-    // Theme Methods
-    toggleTheme() {
-        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-        localStorage.setItem('theme', this.currentTheme);
-        this.setupTheme();
-    }
 
     // Form Methods
     generatePreview() {
@@ -233,7 +216,7 @@ class WarningGeneratorApp {
         
         // Collect all form fields
         const fields = [
-            'company', 'department', 'warningNo', 'warningType', 'severity',
+            'company', 'department', 'warningType', 'severity',
             'warningDate', 'employeeName', 'employeeId', 'employeeEmail',
             'employeePosition', 'warningReason', 'warningDetails', 'consequences',
             'managerName', 'managerPosition'
@@ -272,9 +255,6 @@ class WarningGeneratorApp {
                     ${data.logoFile ? `<img src="${URL.createObjectURL(data.logoFile)}" alt="شعار الشركة" class="company-logo">` : ''}
                     <h2>${data.company || 'اسم الشركة'}</h2>
                     ${data.department ? `<p>${data.department}</p>` : ''}
-                </div>
-                <div class="warning-badge">
-                    إنذار رقم ${data.warningNo}
                 </div>
             </div>
 
@@ -363,7 +343,6 @@ class WarningGeneratorApp {
         if (confirm('هل أنت متأكد من مسح جميع البيانات؟')) {
             document.getElementById('warningForm').reset();
             document.getElementById('warningDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('warningNo').value = this.formatWarningNumber(this.currentWarningNumber);
             
             // Clear file previews
             document.getElementById('logoPreview').style.display = 'none';
@@ -443,7 +422,6 @@ class WarningGeneratorApp {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `warning-${data.warningNo}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -473,7 +451,6 @@ class WarningGeneratorApp {
 
 نحيطكم علماً بصدور إنذار بحقكم وفقاً للتفاصيل التالية:
 
-رقم الإنذار: ${data.warningNo}
 نوع الإنذار: ${data.warningType}
 التاريخ: ${this.formatDate(data.warningDate)}
 سبب الإنذار: ${data.warningReason}
@@ -497,7 +474,6 @@ ${data.company}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنذار موظف - ${data.warningNo}</title>
     <style>
         body { font-family: Arial, sans-serif; direction: rtl; text-align: right; margin: 20px; }
         .warning-document { max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; }
@@ -648,7 +624,6 @@ ${data.company}
             <div class="history-item" data-warning-id="${warning.id}">
                 <div class="history-header">
                     <div>
-                        <div class="history-title">إنذار ${warning.warningNo} - ${warning.employeeName}</div>
                         <div class="history-meta">
                             ${this.formatDate(warning.warningDate)} • ${warning.warningType} • ${warning.company}
                         </div>
@@ -714,7 +689,6 @@ ${data.company}
         
         // Fill form with warning data but generate new number
         this.fillFormWithData(warning);
-        document.getElementById('warningNo').value = this.formatWarningNumber(this.currentWarningNumber);
         
         this.showSection('generator');
         this.updateActiveNavLink(document.querySelector('[href="#generator"]'));
@@ -776,7 +750,6 @@ ${data.company}
         ];
         
         const rows = this.warnings.map(warning => [
-            warning.warningNo,
             warning.employeeName,
             warning.employeeEmail,
             warning.warningType,
@@ -790,28 +763,30 @@ ${data.company}
     }
 
     // Analytics Methods
-    updateAnalytics() {
-        const totalWarnings = this.warnings.length;
-        const currentMonth = new Date().getMonth();
-        const currentYear = new Date().getFullYear();
-        
-        const monthlyWarnings = this.warnings.filter(w => {
-            const warningDate = new Date(w.warningDate);
-            return warningDate.getMonth() === currentMonth && warningDate.getFullYear() === currentYear;
-        }).length;
-        
-        const criticalWarnings = this.warnings.filter(w => w.severity === 'حرجة').length;
-        const uniqueEmployees = new Set(this.warnings.map(w => w.employeeEmail)).size;
-        
-        document.getElementById('totalWarnings').textContent = totalWarnings;
-        document.getElementById('monthlyWarnings').textContent = monthlyWarnings;
-        document.getElementById('criticalWarnings').textContent = criticalWarnings;
-        document.getElementById('uniqueEmployees').textContent = uniqueEmployees;
-        
-        // Update charts (simplified version without Chart.js)
-        this.updateSimpleCharts();
-    }
+// Analytics Methods
+updateAnalytics() {
+    const totalWarnings = this.warnings.length;
+    const byType = {};
+    const bySeverity = {};
 
+    this.warnings.forEach(w => {
+        byType[w.warningType] = (byType[w.warningType] || 0) + 1;
+        bySeverity[w.severity] = (bySeverity[w.severity] || 0) + 1;
+    });
+
+    // تحديث واجهة الإحصائيات
+    document.getElementById('totalWarnings').textContent = totalWarnings;
+
+    const typeContainer = document.getElementById('warningsByType');
+    typeContainer.innerHTML = Object.entries(byType)
+        .map(([type, count]) => `<div>${type}: ${count}</div>`)
+        .join('');
+
+    const severityContainer = document.getElementById('warningsBySeverity');
+    severityContainer.innerHTML = Object.entries(bySeverity)
+        .map(([severity, count]) => `<div>${severity}: ${count}</div>`)
+        .join('');
+}
     updateSimpleCharts() {
         // Simple text-based charts for demonstration
         const warningTypesChart = document.getElementById('warningTypesChart');
@@ -891,7 +866,6 @@ ${data.company}
     incrementWarningNumber() {
         this.currentWarningNumber++;
         localStorage.setItem('nextWarningNumber', this.currentWarningNumber.toString());
-        document.getElementById('warningNo').value = this.formatWarningNumber(this.currentWarningNumber);
     }
 
     formatWarningNumber(number) {
@@ -971,6 +945,7 @@ ${data.company}
 
 // Initialize the application
 const app = new WarningGeneratorApp();
+window.app = app;
 
 // Global error handler
 window.addEventListener('error', (e) => {
